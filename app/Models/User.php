@@ -9,6 +9,12 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
+use App\Models\Course;
+use App\Models\Submission;
+use App\Models\QuizAttempt;
+use App\Models\Point;
+use App\Models\PointLog;
+use App\Models\Badge;
 
 class User extends Authenticatable implements FilamentUser
 {
@@ -48,5 +54,36 @@ class User extends Authenticatable implements FilamentUser
     public function canAccessPanel(Panel $panel): bool
     {
         return in_array($this->role, ['admin', 'guru']);
+    }
+
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'course_user');
+    }
+
+    public function submissions()
+    {
+        return $this->hasMany(Submission::class);
+    }
+
+    public function quizAttempts()
+    {
+        return $this->hasMany(QuizAttempt::class);
+    }
+
+    public function point()
+    {
+        return $this->hasOne(Point::class);
+    }
+
+    public function pointLogs()
+    {
+        return $this->hasMany(PointLog::class);
+    }
+
+    public function badges()
+    {
+        return $this->belongsToMany(Badge::class, 'user_badges')
+            ->withPivot('earned_at');
     }
 }
