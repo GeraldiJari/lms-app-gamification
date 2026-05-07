@@ -19,6 +19,7 @@ use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Grid;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Admin\Resources\CourseResource\RelationManagers\MaterialsRelationManager;
 
 class CourseResource extends Resource
 {
@@ -67,7 +68,7 @@ class CourseResource extends Resource
                         TextInput::make('name')
                             ->label('Nama Course')
                             ->required()
-                            ->live() // 🔥 penting untuk preview realtime
+                            ->live()
                             ->maxLength(255),
 
                         Textarea::make('description')
@@ -133,6 +134,7 @@ class CourseResource extends Resource
     {
         return [
             //
+            MaterialsRelationManager::class,
         ];
     }
 
