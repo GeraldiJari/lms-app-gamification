@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Course;
 use App\Models\Question;
 use App\Models\QuizAttempt;
+use App\Models\Session;
 
 class Quiz extends Model
 {
@@ -19,11 +20,17 @@ class Quiz extends Model
         'type',
         'time_limit',
         'deadline',
+        'session_id',
     ];
 
     public function course()
     {
         return $this->belongsTo(Course::class);
+    }
+
+    public function session()
+    {
+        return $this->belongsTo(Session::class);
     }
 
     public function questions()

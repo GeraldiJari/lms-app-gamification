@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Course;
 use App\Models\PointLog;
+use App\Models\Session;
 
 class Material extends Model
 {
@@ -13,6 +14,7 @@ class Material extends Model
 
     protected $fillable = [
         'course_id',
+        'session_id',
         'title',
         'content',
         'file_path',
@@ -26,5 +28,10 @@ class Material extends Model
     public function pointLogs()
     {
         return $this->morphMany(PointLog::class, 'source');
+    }
+    
+    public function session()
+    {
+        return $this->belongsTo(Session::class);
     }
 }

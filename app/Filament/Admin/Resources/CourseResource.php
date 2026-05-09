@@ -19,9 +19,10 @@ use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Grid;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Admin\Resources\CourseResource\RelationManagers\MaterialsRelationManager;
-use App\Filament\Admin\Resources\CourseResource\RelationManagers\AssignmentsRelationManager;
-use App\Filament\Admin\Resources\CourseResource\RelationManagers\QuizzesRelationManager;
+// use App\Filament\Admin\Resources\CourseResource\RelationManagers\MaterialsRelationManager;
+// use App\Filament\Admin\Resources\CourseResource\RelationManagers\AssignmentsRelationManager;
+// use App\Filament\Admin\Resources\CourseResource\RelationManagers\QuizzesRelationManager;
+use App\Filament\Admin\Resources\CourseResource\RelationManagers\SessionsRelationManager;
 
 class CourseResource extends Resource
 {
@@ -136,9 +137,10 @@ class CourseResource extends Resource
     {
         return [
             //
-            MaterialsRelationManager::class,
-            AssignmentsRelationManager::class,
-            QuizzesRelationManager::class,
+            // MaterialsRelationManager::class,
+            // AssignmentsRelationManager::class,
+            // QuizzesRelationManager::class,
+            SessionsRelationManager::class,
         ];
     }
 

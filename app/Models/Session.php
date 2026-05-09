@@ -4,25 +4,25 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
+use App\Models\Course;
 use App\Models\Material;
 use App\Models\Assignment;
 use App\Models\Quiz;
-use App\Models\Session;
 
-class Course extends Model
+class Session extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'course_id',
+        'title',
+        'week_number',
         'description',
-        'teacher_id',
     ];
 
-    public function users()
+    public function course()
     {
-        return $this->belongsToMany(User::class, 'course_user');
+        return $this->belongsTo(Course::class);
     }
 
     public function materials()
@@ -38,10 +38,5 @@ class Course extends Model
     public function quizzes()
     {
         return $this->hasMany(Quiz::class);
-    }
-
-    public function sessions()
-    {
-        return $this->hasMany(Session::class);
     }
 }

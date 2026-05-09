@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Course;
 use App\Models\Submission;
 use App\Models\PointLog;
+use App\Models\Session;
 
 class Assignment extends Model
 {
@@ -14,6 +15,7 @@ class Assignment extends Model
 
     protected $fillable = [
         'course_id',
+        'session_id',
         'title',
         'description',
         'deadline',
@@ -32,5 +34,10 @@ class Assignment extends Model
     public function pointLogs()
     {
         return $this->morphMany(PointLog::class, 'source');
+    }
+
+    public function session()
+    {
+        return $this->belongsTo(Session::class);
     }
 }
