@@ -22,20 +22,33 @@ class SessionResource extends Resource
     protected static ?string $model = Session::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 //
+                Forms\Components\TextInput::make('title')
+                ->label('Nama Pertemuan')
+                ->required(),
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+            ->recordTitleAttribute('title')
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('week_number')
+                    ->label('Minggu'),
+
+                Tables\Columns\TextColumn::make('title')
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime('d M Y'),
             ])
             ->filters([
                 //
