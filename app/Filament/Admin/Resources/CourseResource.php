@@ -20,6 +20,8 @@ use Filament\Forms\Components\Grid;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Admin\Resources\CourseResource\RelationManagers\MaterialsRelationManager;
+use App\Filament\Admin\Resources\CourseResource\RelationManagers\AssignmentsRelationManager;
+use App\Filament\Admin\Resources\CourseResource\RelationManagers\QuizzesRelationManager;
 
 class CourseResource extends Resource
 {
@@ -83,21 +85,21 @@ class CourseResource extends Resource
                             ->preload()
                             ->required(),
                     ])
-                    ->columnSpan(2),
+                    // ->columnSpan(2),
 
-                // 🔥 PREVIEW (feel UI siswa)
-                Section::make('Preview (Siswa)')
-                    ->schema([
-                        Placeholder::make('preview_card')
-                            ->label('')
-                            ->content(function ($get) {
-                                $name = $get('name') ?? 'Nama Course';
-                                $desc = $get('description') ?? 'Deskripsi course...';
+                // // 🔥 PREVIEW (feel UI siswa)
+                // Section::make('Preview (Siswa)')
+                //     ->schema([
+                //         Placeholder::make('preview_card')
+                //             ->label('')
+                //             ->content(function ($get) {
+                //                 $name = $get('name') ?? 'Nama Course';
+                //                 $desc = $get('description') ?? 'Deskripsi course...';
 
-                                return "📘 {$name}\n\n{$desc}\n\n🎯 Progress: 0%";
-                            }),
-                    ])
-                    ->columnSpan(1),
+                //                 return "📘 {$name}\n\n{$desc}\n\n🎯 Progress: 0%";
+                //             }),
+                //     ])
+                //     ->columnSpan(1),
             ])
     ]);
 }
@@ -135,6 +137,8 @@ class CourseResource extends Resource
         return [
             //
             MaterialsRelationManager::class,
+            AssignmentsRelationManager::class,
+            QuizzesRelationManager::class,
         ];
     }
 
