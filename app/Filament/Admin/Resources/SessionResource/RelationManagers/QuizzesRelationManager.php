@@ -40,6 +40,18 @@ class QuizzesRelationManager extends RelationManager
                 ->label('Durasi (menit)')
                 ->numeric()
                 ->default(30),
+
+            Forms\Components\TextInput::make('multiple_choice_count')
+                ->label('Jumlah Pilihan Ganda')
+                ->numeric()
+                ->default(0),
+                // ->dehydrated(false),
+
+            Forms\Components\TextInput::make('essay_count')
+                ->label('Jumlah Essay')
+                ->numeric()
+                ->default(0),
+                // ->dehydrated(false),
         ]);
     }
 
@@ -63,7 +75,51 @@ class QuizzesRelationManager extends RelationManager
                     ->dateTime('d M Y'),
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                // Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()
+                    ->using(function (array $data, $livewire) {
+
+                        $multipleChoiceCount = $data['multiple_choice_count'] ?? 0;
+                        $essayCount = $data['essay_count'] ?? 0;
+
+                        unset(
+                            $data['multiple_choice_count'],
+                            $data['essay_count']
+                        );
+
+                        $quiz = $livewire->getOwnerRecord()
+                            ->quizzes()
+                            ->create($data);
+
+                        // Generate Pilgan
+                        for ($i = 1; $i <= $multipleChoiceCount; $i++) {
+
+                            $question = $quiz->questions()->create([
+                                'question_text' => "Question {$i}",
+                                'type' => 'single_choice',
+                                'points' => 10,
+                            ]);
+
+                            foreach (['A', 'B', 'C', 'D'] as $option) {
+                                $question->options()->create([
+                                    'option_text' => '',
+                                    'is_correct' => false,
+                                ]);
+                            }
+                        }
+
+                        // Generate Essay
+                        for ($i = 1; $i <= $essayCount; $i++) {
+
+                            $quiz->questions()->create([
+                                'question_text' => "Essay Question {$i}",
+                                'type' => 'essay',
+                                'points' => 10,
+                            ]);
+                        }
+
+                        return $quiz;
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
