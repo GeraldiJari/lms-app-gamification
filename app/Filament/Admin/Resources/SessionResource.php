@@ -26,13 +26,20 @@ class SessionResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                //
-                Forms\Components\TextInput::make('title')
+        return $form->schema([
+            Forms\Components\TextInput::make('title')
                 ->label('Nama Pertemuan')
                 ->required(),
-            ]);
+
+            Forms\Components\TextInput::make('week_number')
+                ->label('Minggu Ke')
+                ->numeric()
+                ->required(),
+
+            Forms\Components\Textarea::make('description')
+                ->label('Deskripsi')
+                ->rows(4),
+        ]);
     }
 
     public static function table(Table $table): Table

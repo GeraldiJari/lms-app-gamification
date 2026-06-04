@@ -16,25 +16,64 @@ class QuestionsRelationManager extends RelationManager
 
     public function form(Form $form): Form
     {
-        return $form->schema([
-            Forms\Components\Textarea::make('question_text')
-                ->label('Pertanyaan')
-                ->required(),
+        return $form
+            ->schema([
 
-            Forms\Components\Select::make('type')
-                ->options([
-                    'single_choice' => 'Pilihan Ganda',
-                    'multiple_choice' => 'Multiple Choice',
-                    'essay' => 'Essay',
-                ])
-                ->default('single_choice')
-                ->required(),
+                Forms\Components\Section::make('Informasi Soal')
+                    ->schema([
+                        Forms\Components\Textarea::make('question_text')
+                            ->label('Pertanyaan')
+                            ->required()
+                            ->rows(5)
+                            ->columnSpanFull(),
 
-            Forms\Components\TextInput::make('points')
-                ->numeric()
-                ->default(10)
-                ->required(),
-        ]);
+
+                        Forms\Components\Select::make('type')
+                            ->label('Jenis Soal')
+                            ->options([
+                                'single_choice' => 'Pilihan Ganda (1 Jawaban)',
+                                'multiple_choice' => 'Pilihan Ganda (Banyak Jawaban)',
+                                'essay' => 'Essay',
+                            ])
+                            ->default('single_choice')
+                            ->live()
+                            ->required(),
+
+                        Forms\Components\TextInput::make('points')
+                            ->label('Nilai')
+                            ->numeric()
+                            ->default(10),
+
+                    ])
+                    ->columns(2),
+
+
+                Forms\Components\Section::make('Pilihan Jawaban')
+                    ->schema([
+
+                        Forms\Components\Repeater::make('options')
+                            ->relationship('options')
+                            ->schema([
+
+                                Forms\Components\TextInput::make('option_text')
+                                    ->label('Isi Pilihan')
+                                    ->required()
+                                    ->columnSpan(2),
+
+
+                                Forms\Components\Toggle::make('is_correct')
+                                    ->label('Jawaban Benar')
+                                    ->inline(false),
+
+                            ])
+                            ->columns(3)
+                            ->defaultItems(4)
+                            ->addActionLabel('Tambah Pilihan'),
+
+                    ])
+                    ->hidden(fn ($get) => $get('type') === 'essay'),
+
+            ]);
     }
 
     public function table(Table $table): Table
@@ -43,11 +82,14 @@ class QuestionsRelationManager extends RelationManager
             ->recordTitleAttribute('question_text')
             ->columns([
                 Tables\Columns\TextColumn::make('question_text')
+                    ->label('Pertanyaan')
                     ->limit(50),
 
-                Tables\Columns\BadgeColumn::make('type'),
+                Tables\Columns\TextColumn::make('type')
+                    ->label('Tipe'),
 
-                Tables\Columns\TextColumn::make('points'),
+                Tables\Columns\TextColumn::make('points')
+                    ->label('Nilai'),
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make(),

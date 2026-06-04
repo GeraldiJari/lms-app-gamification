@@ -23,9 +23,30 @@ class QuizResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                //
+        return $form->schema([
+            Forms\Components\TextInput::make('title')
+                ->label('Judul Quiz')
+                ->required()
+                ->maxLength(255),
+
+            Forms\Components\Textarea::make('description')
+                ->label('Deskripsi')
+                ->rows(4),
+
+            Forms\Components\Select::make('type')
+                ->options([
+                    'practice' => 'Practice',
+                    'quiz' => 'Quiz/Tugas',
+                    'uts' => 'UTS',
+                    'uas' => 'UAS',
+                ])
+                ->default('practice')
+                ->required(),
+
+            Forms\Components\TextInput::make('time_limit')
+                ->label('Durasi (menit)')
+                ->numeric()
+                ->default(30),
             ]);
     }
 
@@ -51,8 +72,7 @@ class QuizResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
-            RelationManagers\QuestionsRelationManager::class,
+            QuestionsRelationManager::class,
         ];
     }
 
