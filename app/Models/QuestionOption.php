@@ -10,6 +10,10 @@ class QuestionOption extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'is_correct' => 'boolean',
+    ];
+
     protected $fillable = [
         'question_id',
         'option_text',
@@ -20,4 +24,6 @@ class QuestionOption extends Model
     {
         return $this->belongsTo(Question::class);
     }
+
+    
 }

@@ -47,28 +47,86 @@ class QuestionsRelationManager extends RelationManager
                     ])
                     ->columns(2),
 
+                    Forms\Components\Section::make('Pilihan Jawaban')
+                        ->schema([
 
-                Forms\Components\Section::make('Pilihan Jawaban')
-                    ->schema([
+                            Forms\Components\Repeater::make('options')
+                                ->relationship('options')
+                                ->schema([
 
-                        Forms\Components\Repeater::make('options')
-                            ->relationship('options')
-                            ->schema([
+                                    Forms\Components\TextInput::make('option_text')
+                                        ->label('Isi Pilihan')
+                                        ->required(),
 
-                                Forms\Components\TextInput::make('option_text')
-                                    ->label('Isi Pilihan')
-                                    ->required()
-                                    ->columnSpan(2),
+                                    Forms\Components\Toggle::make('is_correct')
+    ->label('Jawaban Benar')
+    ->live()
+    ->afterStateUpdated(function ($state, $set, $get) {
+
+        if (!$state) {
+            return;
+        }
+
+        if ($get('../../type') !== 'single_choice') {
+            return;
+        }
+
+        $currentOptionText = $get('option_text');
+
+        $options = $get('../../options');
+
+        foreach ($options as $index => $option) {
+
+            if (($option['option_text'] ?? '') !== $currentOptionText) {
+                $options[$index]['is_correct'] = false;
+            }
+        }
+
+        $set('../../options', $options);
+    }),
+
+                                ])
+                                // ->columns(1)
+                                // ->defaultItems(4)
+                                // ->live()
+                                // ->afterStateUpdated(function ($state, $set, $get) {
+
+                                //     if ($get('type') !== 'single_choice') {
+                                //         return;
+                                //     }
+
+                                //     $options = $state;
+
+                                //     // cari item yang baru aktif
+                                //     $activeIndex = null;
+
+                                //     foreach ($options as $index => $option) {
+
+                                //         if (($option['is_correct'] ?? false) === true) {
+                                //             $activeIndex = $index;
+                                //         }
+
+                                //     }
+
+                                //     if ($activeIndex === null) {
+                                //         return;
+                                //     }
 
 
-                                Forms\Components\Toggle::make('is_correct')
-                                    ->label('Jawaban Benar')
-                                    ->inline(false),
+                                //     foreach ($options as $index => $option) {
 
-                            ])
-                            ->columns(3)
-                            ->defaultItems(4)
-                            ->addActionLabel('Tambah Pilihan'),
+                                //         $options[$index]['is_correct'] =
+                                //             $index === $activeIndex;
+
+                                //     }
+
+
+                                //     $set('options', $options);
+
+                                // })
+                                ->columns(3)
+                                ->defaultItems(4)
+                                ->addActionLabel('Tambah Pilihan'),
 
                     ])
                     ->hidden(fn ($get) => $get('type') === 'essay'),
@@ -86,7 +144,12 @@ class QuestionsRelationManager extends RelationManager
                     ->limit(50),
 
                 Tables\Columns\TextColumn::make('type')
-                    ->label('Tipe'),
+                    ->label('Tipe')
+                    ->colors([
+                        'success' => 'single_choice',
+                        'warning' => 'multiple_choice',
+                        'danger' => 'essay',
+                    ]),
 
                 Tables\Columns\TextColumn::make('points')
                     ->label('Nilai'),
