@@ -35,6 +35,17 @@ class Course extends Model
         return $this->hasMany(Assignment::class);
     }
 
+    public function teacher()
+    {
+        return $this->belongsTo(User::class, 'teacher_id');
+    }
+
+    public function students()
+    {
+        return $this->belongsToMany(User::class, 'course_user')
+            ->where('role', 'student');
+    }
+
     public function quizzes()
     {
         return $this->hasMany(Quiz::class);

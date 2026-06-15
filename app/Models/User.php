@@ -86,4 +86,9 @@ class User extends Authenticatable implements FilamentUser
         return $this->belongsToMany(Badge::class, 'user_badges')
             ->withPivot('earned_at');
     }
+
+    public function enrolledCourses()
+    {
+        return $this->belongsToMany(Course::class, 'course_user');
+    }
 }

@@ -29,7 +29,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        if (auth()->user()->role !== 'siswa') {
+        if (auth()->user()->role !== 'student') {
             return redirect('/admin');
         }
         
