@@ -4,12 +4,12 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Student\DashboardController as StudentDashboardController;
+use App\Http\Controllers\Student\CourseController;
 
 
 Route::get('/', function () {
     return view('welcome');
 });
-
 
 Route::get('/dashboard', [
     DashboardController::class,
@@ -50,6 +50,11 @@ Route::middleware(['auth','student'])
             StudentDashboardController::class,
             'index'
         ])->name('student.dashboard');
+
+        Route::get('/courses', [
+            CourseController::class,
+            'index'
+        ])->name('student.courses');
 
 
     });
