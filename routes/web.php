@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Student\DashboardController as StudentDashboardController;
 use App\Http\Controllers\Student\CourseController;
+use App\Http\Controllers\Student\SessionController as StudentSessionController;
+use App\Http\Controllers\Student\MaterialController as StudentMaterialController;
 
 
 Route::get('/', function () {
@@ -40,22 +42,41 @@ Route::middleware('auth')->group(function () {
 
 });
 
-
 Route::middleware(['auth','student'])
     ->prefix('learning')
     ->group(function(){
-
 
         Route::get('/', [
             StudentDashboardController::class,
             'index'
         ])->name('student.dashboard');
 
+        // Courses
         Route::get('/courses', [
             CourseController::class,
             'index'
         ])->name('student.courses');
 
+        Route::get('/courses/{course}',[
+            CourseController::class,
+            'show'
+        ])->name('student.courses.show');
+
+        Route::get('/courses/{course}/sessions/{session}', [
+            StudentSessionController::class,
+            'show'
+        ])->name('student.sessions.show');
+
+        // Materials
+        Route::get('/courses/{course}/sessions/{session}/materials', [
+            StudentMaterialController::class,
+            'index'
+        ])->name('student.materials.index');
+
+        Route::get('/courses/{course}/sessions/{session}/materials/{material}', [
+            StudentMaterialController::class,
+            'show'
+        ])->name('student.materials.show');
 
     });
 

@@ -67,15 +67,31 @@
 
             @forelse($courses as $course)
 
-                <div class="border rounded-lg p-4">
+                <div class="flex justify-between items-center">
 
-                    <h3 class="font-semibold">
+                    <h2 class="text-xl font-semibold">
                         {{ $course->name }}
-                    </h3>
+                    </h2>
 
-                    <p class="text-sm text-gray-500">
-                        {{ $course->description }}
-                    </p>
+                    <span class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm">
+                        {{ $course->sessions_count }} Session
+                    </span>
+
+                </div>
+
+                <p class="text-gray-500 mt-4">
+                    {{ Str::limit($course->description,100) }}
+                </p>
+
+                <div class="mt-6">
+
+                    <a
+                        href="{{ route('student.courses.show',$course) }}"
+                        class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl">
+
+                        Buka Course →
+
+                    </a>
 
                 </div>
 

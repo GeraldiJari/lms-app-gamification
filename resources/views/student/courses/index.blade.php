@@ -20,28 +20,39 @@
 
         @forelse($courses as $course)
 
-            <div
-                class="bg-white rounded-xl shadow-sm p-6">
+            <a
+                href="{{ route('student.courses.show', $course) }}"
+                class="block bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-lg transition duration-300"
+            >
 
-                <h2 class="font-bold text-lg">
-                    {{ $course->name }}
-                </h2>
+                <div class="p-6">
 
-                <p class="text-gray-500 mt-2">
-                    {{ Str::limit(
-                        $course->description,
-                        80
-                    ) }}
-                </p>
+                    <div class="flex justify-between">
 
-                <div class="mt-4 text-sm text-gray-600">
+                        <h2 class="text-xl font-semibold">
 
-                    {{ $course->sessions_count }}
-                    Session
+                            {{ $course->name }}
+
+                        </h2>
+
+                        <span
+                            class="bg-blue-100 text-blue-700 text-sm px-3 py-1 rounded-full">
+
+                            {{ $course->sessions_count }} Session
+
+                        </span>
+
+                    </div>
+
+                    <p class="text-gray-500 mt-4">
+
+                        {{ Str::limit($course->description,100) }}
+
+                    </p>
 
                 </div>
 
-            </div>
+            </a>
 
         @empty
 
