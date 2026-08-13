@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Course;
 use App\Models\PointLog;
 use App\Models\Session;
 
@@ -13,25 +12,23 @@ class Material extends Model
     use HasFactory;
 
     protected $fillable = [
-        'course_id',
         'session_id',
         'title',
         'content',
         'file_path',
     ];
 
-    public function course()
+    protected $casts = [
+        'content' => 'array',
+    ];
+
+    public function session()
     {
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(Session::class);
     }
 
     public function pointLogs()
     {
         return $this->morphMany(PointLog::class, 'source');
-    }
-    
-    public function session()
-    {
-        return $this->belongsTo(Session::class);
     }
 }
