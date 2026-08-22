@@ -17,6 +17,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Builder;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
+use App\Filament\Admin\Schemas\MaterialContentSchema;
 
 class MaterialResource extends Resource
 {
@@ -56,103 +57,7 @@ class MaterialResource extends Resource
                     ])
                     ->columns(2),
 
-                Forms\Components\Section::make('Learning Content')
-                    ->description(
-                        'Susun materi pembelajaran menggunakan berbagai jenis content.'
-                    )
-                    ->schema([
-
-                        Builder::make('content')
-                            ->label('Content')
-                            ->blocks([
-
-                                Builder\Block::make('text')
-                                    ->label('Text')
-                                    ->icon('heroicon-o-document-text')
-                                    ->schema([
-
-                                        RichEditor::make('content')
-                                            ->label('Text Content')
-                                            ->required()
-                                            ->columnSpanFull(),
-
-                                    ]),
-
-                                Builder\Block::make('image')
-                                    ->label('Image')
-                                    ->icon('heroicon-o-photo')
-                                    ->schema([
-
-                                        FileUpload::make('image')
-                                            ->label('Image')
-                                            ->image()
-                                            ->disk('public')
-                                            ->directory('materials/images')
-                                            ->required(),
-
-                                    ]),
-
-                                Builder\Block::make('video')
-                                    ->label('Video')
-                                    ->icon('heroicon-o-video-camera')
-                                    ->schema([
-
-                                        TextInput::make('url')
-                                            ->label('Video URL')
-                                            ->placeholder(
-                                                'https://www.youtube.com/watch?v=...'
-                                            )
-                                            ->url()
-                                            ->required()
-                                            ->maxLength(2048),
-
-                                    ]),
-
-                                Builder\Block::make('link')
-                                    ->label('Link')
-                                    ->icon('heroicon-o-link')
-                                    ->schema([
-
-                                        TextInput::make('title')
-                                            ->label('Link Title')
-                                            ->required()
-                                            ->maxLength(255),
-
-                                        TextInput::make('url')
-                                            ->label('URL')
-                                            ->url()
-                                            ->required()
-                                            ->maxLength(2048),
-
-                                    ])
-                                    ->columns(2),
-
-                                Builder\Block::make('file')
-                                    ->label('File')
-                                    ->icon('heroicon-o-document')
-                                    ->schema([
-
-                                        FileUpload::make('file')
-                                            ->label('File')
-                                            ->disk('public')
-                                            ->directory('materials/files')
-                                            ->acceptedFileTypes([
-                                                'application/pdf',
-                                                'application/vnd.ms-powerpoint',
-                                                'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-                                            ])
-                                            ->maxSize(51200)
-                                            ->required(),
-
-                                    ]),
-
-                            ])
-                            ->collapsible()
-                            ->cloneable()
-                            ->reorderable()
-                            ->columnSpanFull(),
-
-                    ]),
+                MaterialContentSchema::make(),
             ]);
     }
 
