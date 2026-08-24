@@ -54,9 +54,29 @@
 
 
         {{-- Material Content --}}
-        <div class="prose max-w-none prose-slate">
+        {{-- Material Content --}}
+        <div class="space-y-8">
 
-            {!! $material->content !!}
+            @foreach ($material->content ?? [] as $block)
+
+                @if (($block['type'] ?? null) === 'text')
+
+                    <div class="prose max-w-none prose-slate">
+                        {!! $block['data']['content'] ?? '' !!}
+                    </div>
+
+                @elseif (($block['type'] ?? null) === 'video')
+
+                    <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                        <p class="text-sm text-slate-500">
+                            Video:
+                            {{ $block['data']['url'] ?? '-' }}
+                        </p>
+                    </div>
+
+                @endif
+
+            @endforeach
 
         </div>
 
