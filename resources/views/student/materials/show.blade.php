@@ -52,29 +52,34 @@
 
         </header>
 
-
-        {{-- Material Content --}}
         {{-- Material Content --}}
         <div class="space-y-8">
 
             @foreach ($material->content ?? [] as $block)
 
-                @if (($block['type'] ?? null) === 'text')
+                @switch($block['type'] ?? null)
 
-                    <div class="prose max-w-none prose-slate">
-                        {!! $block['data']['content'] ?? '' !!}
-                    </div>
+                    @case('text')
+                        <x-student.material.text :block="$block" />
+                        @break
 
-                @elseif (($block['type'] ?? null) === 'video')
+                    @case('image')
+                        <x-student.material.image :block="$block" />
+                        @break
 
-                    <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                        <p class="text-sm text-slate-500">
-                            Video:
-                            {{ $block['data']['url'] ?? '-' }}
-                        </p>
-                    </div>
+                    @case('video')
+                        <x-student.material.video :block="$block" />
+                        @break
 
-                @endif
+                    @case('link')
+                        <x-student.material.link :block="$block" />
+                        @break
+
+                    @case('file')
+                        <x-student.material.file :block="$block" />
+                        @break
+
+                @endswitch
 
             @endforeach
 

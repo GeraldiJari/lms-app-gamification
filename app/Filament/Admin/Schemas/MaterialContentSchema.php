@@ -97,6 +97,12 @@ class MaterialContentSchema
                     ->label('File / PDF')
                     ->icon('heroicon-o-document')
                     ->schema([
+                        TextInput::make('title')
+                            ->label('Judul File')
+                            ->placeholder('Contoh: Modul Laravel Dasar')
+                            ->maxLength(255)
+                            ->required(),
+                            
                         FileUpload::make('file')
                             ->label('File')
                             ->disk('public')
@@ -104,6 +110,16 @@ class MaterialContentSchema
                             ->visibility('public')
                             ->acceptedFileTypes([
                                 'application/pdf',
+                                'application/msword',
+                                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+
+                                'application/vnd.ms-powerpoint',
+                                'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+
+                                'application/vnd.ms-excel',
+                                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+
+                                'application/zip',
                             ])
                             ->maxSize(10240)
                             ->required(),
